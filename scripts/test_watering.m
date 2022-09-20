@@ -43,5 +43,7 @@ axis("equal");
 
 [field] = field_watering(field, sample_x, sample_y, sample_vol);
 
+field_vol_tot = sum(sum(field.water))
+
 figure(2)
 field_plot(field);
