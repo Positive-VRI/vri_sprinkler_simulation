@@ -14,8 +14,8 @@ function [sprinkler] = sprinkler_init(pose, fov, range, flow, omega, range_sigma
   % Using Abramowitz-Stegun (9.7.1): I_0(k) ~= exp(k) / sqrt(2*pi*k) (large k)
   %  -> log(I_0(k)) ~= k - log( (2*pi*k)^0.5) = k - 0.5 * log( (2*pi*k) )
   fov_tol = 0.15;                         % percentage of maximum
-  fov_kappa = log(fov_tol) / (cos(0.5*fov) - 1);  % kappa of von Mises corresponding to fov
-  range_mu = range - 3 * range_sigma;
+  fov_kappa = log(fov_tol) / (cos(0.5*fov) - 1)  % kappa of von Mises corresponding to fov
+  range_mu = range - 3 * range_sigma
   
   assert(length(pose) == 3);
   
@@ -25,19 +25,38 @@ function [sprinkler] = sprinkler_init(pose, fov, range, flow, omega, range_sigma
 ##  endif
 
   % Compute the sprinkler pattern
-  x_half_size = 5 * range_sigma;
-  y_half_size = 0.5 * 2.0 * fov * range;
-  x_half_num = ceil(x_half_size / res);
-  y_half_num = ceil(y_half_size / res);
-  x_sample = (-x_half_num:x_half_num) * res + range_mu;
-  y_sample = (-y_half_num:y_half_num) * res;
-  [X, Y] = meshgrid(x_sample,y_sample);
-  Rho = sqrt(X.^2 + Y.^2);
-  Theta = atan2(Y,X);
-  VonMises = exp(fov_kappa .* cos(Theta)) ./ (2 .* pi .* besseli(0,fov_kappa));
-  BRayleigh = exp(-(Rho - range_mu).^2 ./ (2 * range_sigma.^2)) .* Rho;
-  W = VonMises .* BRayleigh;
-  W = W / sum(sum(W));  
+  
+  range_localized = 1;
+  if (range_localized==1)
+    %x_half_size = 5 * range_sigma;
+    y_half_size = 0.5 * 2.0 * fov * range;
+    %x_half_num = ceil(x_half_size / res);
+    x_num = ceil((range + 3*range_sigma) / res);
+    y_half_num = ceil(y_half_size / res);
+    %x_sample = (-x_half_num:x_half_num) * res + range_mu;
+    x_sample = (0:x_num) * res;
+    y_sample = (-y_half_num:y_half_num) * res;
+    [X, Y] = meshgrid(x_sample,y_sample);
+    Rho = sqrt(X.^2 + Y.^2);
+    Theta = atan2(Y,X);
+    VonMises = exp(fov_kappa .* cos(Theta)) ./ (2 .* pi .* besseli(0,fov_kappa));
+    BRayleigh = exp(-(Rho - range_mu).^2 ./ (2 * range_sigma.^2)) .* Rho;
+    W = VonMises .* BRayleigh;
+    W = W / sum(sum(W));
+  else 
+    y_half_size = 0.5 * 2.0 * fov * range;
+    x_num = ceil((range + 3*range_sigma) / res);
+    y_half_num = ceil(y_half_size / res);
+    x_sample = (0:x_num) * res;
+    y_sample = (-y_half_num:y_half_num) * res;
+    [X, Y] = meshgrid(x_sample,y_sample);
+    Rho = sqrt(X.^2 + Y.^2);
+    Theta = atan2(Y,X);
+    VonMises = exp(fov_kappa .* cos(Theta)) ./ (2 .* pi .* besseli(0,fov_kappa));
+    Rayleigh = exp(-Rho.^2 ./ (2 * range_sigma.^2)) .* Rho ./ range_sigma.^2;
+    W = VonMises .* Rayleigh;
+    W = W / sum(sum(W));
+  end  
   
   sprinkler = struct ( ...
     "x", pose(1),  

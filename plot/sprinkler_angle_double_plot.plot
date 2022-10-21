@@ -1,6 +1,6 @@
-set terminal postscript eps enhanced color "Times-Roman" 22
+set terminal postscript eps enhanced color "Times-Roman" 14
 set output "sprinkler_angle.eps"
-set key font ",14" samplen 1
+set key font ",12" samplen 1
 
 set datafile separator ','
 

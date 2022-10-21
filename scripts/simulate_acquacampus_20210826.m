@@ -6,7 +6,7 @@ sprinkler_flow = 675 * 10^(-3) / 60;    % 675 l/min = 675 * 10^{-3} m^3 /min
 sprinkler_omega = pi/180 * 1.714; 
 sprinkler_fov = pi/180*10;
 sprinkler_range = 44.0;
-sprinkler_sigma = 1.0;
+sprinkler_sigma = 6.0;
 sprinkler_res = 0.10;
 
 sprinkler = sprinkler_init(sprinkler_pose, sprinkler_fov, sprinkler_range, ...
@@ -44,21 +44,34 @@ load ../plot/sprinkler_angle.csv;
 
 % Interpolates the values of sprinkler distance and angle according 
 % to the desired simulation time step dt_sim (in [s])
-dt_sim = 5.0;   
+dt_sim = 2.0;   
+xPerc = 0.05;
+yPerc = 0.25;
+%cmd_time = sprinkler_angle(1,1):dt_sim:sprinkler_angle(end,1);
+%cmd_distance = interpolate_time(sprinkler_angle(:,1)',sprinkler_angle(:,2)',cmd_time);
+%cmd_angle = interpolate_time(sprinkler_angle(:,1)',pi/180 * sprinkler_angle(:,3)',cmd_time); 
+time_sim = sprinkler_angle(1,1):dt_sim:sprinkler_angle(end,1);
+%[cmd_angle, cmd_time] = interpolate_swing_time(sprinkler_angle(:,1)',sprinkler_angle(:,3)',time_sim, xPerc, yPerc);
 cmd_time = sprinkler_angle(1,1):dt_sim:sprinkler_angle(end,1);
-cmd_distance = interpolate_time(sprinkler_angle(:,1)',sprinkler_angle(:,2)',cmd_time);
 cmd_angle = interpolate_time(sprinkler_angle(:,1)',pi/180 * sprinkler_angle(:,3)',cmd_time); 
+cmd_distance = interpolate_time(sprinkler_angle(:,1)',sprinkler_angle(:,2)',cmd_time);
 
 disp(['loaded commands: simulation from time ' num2str(sprinkler_angle(1,1)) ' to ' num2str(sprinkler_angle(end,1)) ' with step ' num2str(dt_sim)]);
+disp(['interpolated time from '  num2str(cmd_time(1)) ' to ' num2str(cmd_time(end))]);
+disp(['sizes: cmd_time '  num2str(length(cmd_time)) ...
+       ', cmd_angle ' num2str(length(cmd_angle)) ...
+       ', cmd_distance ' num2str(length(cmd_distance))]);
+       
+%plot(cmd_time(1:1000), cmd_angle(1:1000))
 
 % ---------------------------------------------------------
 % SIMULATION
 % ---------------------------------------------------------
 
-t_num = length(cmd_time);
+t_num = length(cmd_time)
 sprinkler_init_x = 80.0;
 volume_tot = 0;
-for k=2:t_num
+for k=2:(t_num-200)
   if (mod(k, 50) == 0)
     disp(['time ' num2str(cmd_time(k)) '/' num2str(cmd_time(t_num)) ' volume_tot ' num2str(volume_tot) ' m^3']);
   end
@@ -78,4 +91,12 @@ disp(['volume_tot ' num2str(volume_tot) '; flow-by-time ' num2str(volume_predict
 volume_field = sum(sum(field.water))
 
 field_plot(field,'meshz')
+
+figure(2);
+field_plot_hist(field,0.0,120.0,-20.0,20.0,1.0)
+print -color -depsc field_water_res1.eps
+
+figure(2);
+field_plot_hist(field,0.0,120.0,-20.0,20.0,10.0)
+print -color -depsc field_water_res10.eps
 
