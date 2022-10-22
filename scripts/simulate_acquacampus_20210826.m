@@ -40,7 +40,8 @@ field = field_init(field_length, field_width, field_cell_size, field_x_num, fiel
 % 1) sprinkler_angle(:,1): column 1 stores the time in [s]
 % 2) sprinkler_angle(:,2): column 2 stores the travelled distance
 % 3) sprinkler_angle(:,3): column 3 stores the angle in [deg]
-load ../plot/sprinkler_angle.csv;
+load ../data/sprinkler_angle_acquacampus_20220826.csv;
+sprinkler_angle = sprinkler_angle_acquacampus_20220826; 
 
 % Interpolates the values of sprinkler distance and angle according 
 % to the desired simulation time step dt_sim (in [s])
