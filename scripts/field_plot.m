@@ -1,3 +1,24 @@
+% FIELD Plots the field with the received water volume
+%   
+%   field_plot(field,type)
+%
+% Plots the irrigation outcome (water volume per cell) of a given field in the 
+% form of mesh or contour set. 
+%
+% INPUT:
+% - field: the field object to be plotted;
+% - type: it must be either 'contour' or 'meshz'. 
+%
+% OUTPUT:
+% - a window with the required plot.
+%
+%
+% VRI Sprinkler Simulation
+% Copyright (C) 2022 Dario Lodi Rizzini, Gabriele Penzotti.
+% 
+% vri-sprinkler-simulation is free software: you can redistribute it and/or modify
+% it under the terms of the Creative Common License.
+%
 function field_plot(field,type)
   if (nargin < 2) 
     type = 'contour';

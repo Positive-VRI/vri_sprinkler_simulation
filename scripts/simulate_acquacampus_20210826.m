@@ -1,9 +1,26 @@
+% VRI Sprinkler Simulation
+% Copyright (C) 2022 Dario Lodi Rizzini, Gabriele Penzotti.
+% 
+% vri-sprinkler-simulation is free software: you can redistribute it and/or modify
+% it under the terms of the Creative Common License.
+%
+% simulate_acquacampus_20210826.m
+% -------------------------------------------------------------------
+% This Octave script simulate the variable rate irrigation (VRI) achieved 
+% through a hose reel rain gun sprinkler. 
+% The parameter values as well as the input motion command file 
+% "sprinkler_angle_acquacampus_20210826.csv" are set in order to reproduce 
+% the experiments performed at Acquacampus, Budrio (BO), Italy 
+% by a team of the University of Parma wih the support of consozio del 
+% Canale Emiliano-Romagnolo on August 26th 2021.  
+
+
 % ---------------------------------------------------------
 % SPRINKLER INIT
 % ---------------------------------------------------------
 sprinkler_pose = [80.0, 0.0, pi/180*0];
-sprinkler_flow = 675 * 10^(-3) / 60;    % 675 l/min = 675 * 10^{-3} m^3 /min
-sprinkler_omega = pi/180 * 1.714; 
+sprinkler_flow = 675% 10^(-3) / 60;    % 675 l/min = 675% 10^{-3} m^3 /min
+sprinkler_omega = pi/180% 1.714; 
 sprinkler_fov = pi/180*10;
 sprinkler_range = 44.0;
 sprinkler_sigma = 6.0;
@@ -17,20 +34,11 @@ sprinkler = sprinkler_init(sprinkler_pose, sprinkler_fov, sprinkler_range, ...
 % ---------------------------------------------------------
 
 field_length = 120.0;
-field_width = 2 * sprinkler_range;
+field_width = 2% sprinkler_range;
 field_cell_size = 0.40;
-field_x_num = ceil(1.20 * field_length / field_cell_size)
-field_y_num = ceil(1.20 * field_width / field_cell_size)
+field_x_num = ceil(1.20% field_length / field_cell_size)
+field_y_num = ceil(1.20% field_width / field_cell_size)
 field = field_init(field_length, field_width, field_cell_size, field_x_num, field_y_num);
-
-% Field divided into 2 sectors longway (each sector divided into a left and right area)
-##area_lens = [60.0;
-##             20.0];
-##area_water_targets = [0.01667, 0.01333;   % 16.67 mm right, 13.33 mm left, avg 15.00 mm
-##                      0.01235, 0.01765];  % 12.35 mm right, 17.65 mm left, avg 15.00 mm
-##field = field_set_water_target(field, area_lens, area_water_targets);
-##
-##[field, t, pose, omega, speed] = sprinkler_irrigation(sprinkler, field, 1);
 
 % ---------------------------------------------------------
 % COMMANDS
@@ -50,11 +58,11 @@ xPerc = 0.05;
 yPerc = 0.25;
 %cmd_time = sprinkler_angle(1,1):dt_sim:sprinkler_angle(end,1);
 %cmd_distance = interpolate_time(sprinkler_angle(:,1)',sprinkler_angle(:,2)',cmd_time);
-%cmd_angle = interpolate_time(sprinkler_angle(:,1)',pi/180 * sprinkler_angle(:,3)',cmd_time); 
+%cmd_angle = interpolate_time(sprinkler_angle(:,1)',pi/180% sprinkler_angle(:,3)',cmd_time); 
 time_sim = sprinkler_angle(1,1):dt_sim:sprinkler_angle(end,1);
 %[cmd_angle, cmd_time] = interpolate_swing_time(sprinkler_angle(:,1)',sprinkler_angle(:,3)',time_sim, xPerc, yPerc);
 cmd_time = sprinkler_angle(1,1):dt_sim:sprinkler_angle(end,1);
-cmd_angle = interpolate_time(sprinkler_angle(:,1)',pi/180 * sprinkler_angle(:,3)',cmd_time); 
+cmd_angle = interpolate_time(sprinkler_angle(:,1)',pi/180% sprinkler_angle(:,3)',cmd_time); 
 cmd_distance = interpolate_time(sprinkler_angle(:,1)',sprinkler_angle(:,2)',cmd_time);
 
 disp(['loaded commands: simulation from time ' num2str(sprinkler_angle(1,1)) ' to ' num2str(sprinkler_angle(end,1)) ' with step ' num2str(dt_sim)]);
@@ -86,7 +94,7 @@ for k=2:(t_num-200)
   [field] = field_watering(field, sample_x, sample_y, sample_vol);
 end
 
-volume_predicted = sprinkler.flow * (cmd_time(end) - cmd_time(1));
+volume_predicted = sprinkler.flow% (cmd_time(end) - cmd_time(1));
 disp(['volume_tot ' num2str(volume_tot) '; flow-by-time ' num2str(volume_predicted)]);
 
 volume_field = sum(sum(field.water))
@@ -95,9 +103,9 @@ field_plot(field,'meshz')
 
 figure(2);
 field_plot_hist(field,0.0,120.0,-20.0,20.0,1.0)
-print -color -depsc field_water_res1.eps
+print -color -depsc ../plot/field_water_res1.eps
 
-figure(2);
+figure(3);
 field_plot_hist(field,0.0,120.0,-20.0,20.0,10.0)
-print -color -depsc field_water_res10.eps
+print -color -depsc ../plot/field_water_res10.eps
 
