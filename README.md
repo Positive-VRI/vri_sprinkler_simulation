@@ -12,7 +12,7 @@ This application has been developed as part of the activities of the [POSITIVE](
 collaborative project (European Regional Development Fund POR-FESR 2014-2020, 
 Research and Innovation of the Region Emilia-Romagna).    
 
-More information is provided in the paper:  
+More information is provided in the [paper](http://dx.doi.org/10.2139/ssrn.4352021):  
 
 ````
   @article{penzotti2023,
