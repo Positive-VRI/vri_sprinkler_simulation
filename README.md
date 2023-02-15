@@ -12,11 +12,18 @@ This application has been developed as part of the activities of the [POSITIVE](
 collaborative project (European Regional Development Fund POR-FESR 2014-2020, 
 Research and Innovation of the Region Emilia-Romagna).    
 
-More information is provided in the paper: 
+More information is provided in the paper:  
 
-G. Penzotti, D. Lodi Rizzini, S. Caselli. 
-A Novel Planning Strategy for Sprinkler-based Variable Rate Irrigation. 
-Under review.  
+````
+  @article{penzotti2023,
+    author={Penzotti, G. and Lodi Rizzini, D. and Caselli, S.},
+    title={{A Planning Strategy for Sprinkler-Based Variable Rate Irrigation}},
+    publisher={SSRN}, 
+    doi = {http://dx.doi.org/10.2139/ssrn.4352021},
+    note = {https://ssrn.com/abstract=4352021},
+  }
+````
+
 
 More information will be provided in future updates. 
 
