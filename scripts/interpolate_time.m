@@ -1,7 +1,7 @@
 function [yOut,xOut] = interpolate_time(xIn,yIn,xOut)
   nIn = length(xIn);
   if (length(yIn) ~= nIn) 
-    error(['tIn and vIn must have equal size: length tIn ' num2str(length(t)) ' v ' num2str(length(v))]);
+    error(['tIn and vIn must have equal size: length tIn ' num2str(length(yIn)) ' v ' num2str(length(xIn))]);
   end
   if (rows(xIn) > columns(xIn))
     warning('use row vectors: xIn is transposed');    

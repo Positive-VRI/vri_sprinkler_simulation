@@ -19,8 +19,8 @@
 % SPRINKLER INIT
 % ---------------------------------------------------------
 sprinkler_pose = [80.0, 0.0, pi/180*0];
-sprinkler_flow = 675% 10^(-3) / 60;    % 675 l/min = 675% 10^{-3} m^3 /min
-sprinkler_omega = pi/180% 1.714; 
+sprinkler_flow = 675 * 10^(-3) / 60;    % 675 l/min = 675% 10^{-3} m^3 /min
+sprinkler_omega = pi/180 * 1.714; 
 sprinkler_fov = pi/180*10;
 sprinkler_range = 44.0;
 sprinkler_sigma = 6.0;
@@ -34,10 +34,10 @@ sprinkler = sprinkler_init(sprinkler_pose, sprinkler_fov, sprinkler_range, ...
 % ---------------------------------------------------------
 
 field_length = 120.0;
-field_width = 2% sprinkler_range;
+field_width = 2 * sprinkler_range;
 field_cell_size = 0.40;
-field_x_num = ceil(1.20% field_length / field_cell_size)
-field_y_num = ceil(1.20% field_width / field_cell_size)
+field_x_num = ceil(1.20 * field_length / field_cell_size)
+field_y_num = ceil(1.20 * field_width / field_cell_size)
 field = field_init(field_length, field_width, field_cell_size, field_x_num, field_y_num);
 
 % ---------------------------------------------------------
@@ -48,8 +48,8 @@ field = field_init(field_length, field_width, field_cell_size, field_x_num, fiel
 % 1) sprinkler_angle(:,1): column 1 stores the time in [s]
 % 2) sprinkler_angle(:,2): column 2 stores the travelled distance
 % 3) sprinkler_angle(:,3): column 3 stores the angle in [deg]
-load ../data/sprinkler_angle_acquacampus_20220826.csv;
-sprinkler_angle = sprinkler_angle_acquacampus_20220826; 
+load ../data/sprinkler_angle_acquacampus_20210826.csv;
+sprinkler_angle = sprinkler_angle_acquacampus_20210826; 
 
 % Interpolates the values of sprinkler distance and angle according 
 % to the desired simulation time step dt_sim (in [s])
@@ -62,7 +62,7 @@ yPerc = 0.25;
 time_sim = sprinkler_angle(1,1):dt_sim:sprinkler_angle(end,1);
 %[cmd_angle, cmd_time] = interpolate_swing_time(sprinkler_angle(:,1)',sprinkler_angle(:,3)',time_sim, xPerc, yPerc);
 cmd_time = sprinkler_angle(1,1):dt_sim:sprinkler_angle(end,1);
-cmd_angle = interpolate_time(sprinkler_angle(:,1)',pi/180% sprinkler_angle(:,3)',cmd_time); 
+cmd_angle = interpolate_time(sprinkler_angle(:,1)'*pi/180, sprinkler_angle(:,3)',cmd_time); 
 cmd_distance = interpolate_time(sprinkler_angle(:,1)',sprinkler_angle(:,2)',cmd_time);
 
 disp(['loaded commands: simulation from time ' num2str(sprinkler_angle(1,1)) ' to ' num2str(sprinkler_angle(end,1)) ' with step ' num2str(dt_sim)]);
