@@ -16,9 +16,9 @@ More information is provided in the [paper](http://dx.doi.org/10.2139/ssrn.43520
 
 ````
   @article{penzotti2023,
-    author={Penzotti, G. and Lodi Rizzini, D. and Caselli, S.},
-    title={{A Planning Strategy for Sprinkler-Based Variable Rate Irrigation}},
-    publisher={SSRN}, 
+    author = {Penzotti, G. and Lodi Rizzini, D. and Caselli, S.},
+    title = {{A Planning Strategy for Sprinkler-Based Variable Rate Irrigation}},
+    publisher = {SSRN}, 
     doi = {http://dx.doi.org/10.2139/ssrn.4352021},
     note = {https://ssrn.com/abstract=4352021},
   }
