@@ -62,7 +62,7 @@ yPerc = 0.25;
 time_sim = sprinkler_angle(1,1):dt_sim:sprinkler_angle(end,1);
 %[cmd_angle, cmd_time] = interpolate_swing_time(sprinkler_angle(:,1)',sprinkler_angle(:,3)',time_sim, xPerc, yPerc);
 cmd_time = sprinkler_angle(1,1):dt_sim:sprinkler_angle(end,1);
-cmd_angle = interpolate_time(sprinkler_angle(:,1)'*pi/180, sprinkler_angle(:,3)',cmd_time); 
+cmd_angle = interpolate_time(sprinkler_angle(:,1)',pi/180 * sprinkler_angle(:,3)',cmd_time); 
 cmd_distance = interpolate_time(sprinkler_angle(:,1)',sprinkler_angle(:,2)',cmd_time);
 
 disp(['loaded commands: simulation from time ' num2str(sprinkler_angle(1,1)) ' to ' num2str(sprinkler_angle(end,1)) ' with step ' num2str(dt_sim)]);
@@ -72,6 +72,7 @@ disp(['sizes: cmd_time '  num2str(length(cmd_time)) ...
        ', cmd_distance ' num2str(length(cmd_distance))]);
        
 %plot(cmd_time(1:1000), cmd_angle(1:1000))
+plot(cmd_time, cmd_angle)
 
 % ---------------------------------------------------------
 % SIMULATION
@@ -94,7 +95,7 @@ for k=2:(t_num-200)
   [field] = field_watering(field, sample_x, sample_y, sample_vol);
 end
 
-volume_predicted = sprinkler.flow% (cmd_time(end) - cmd_time(1));
+volume_predicted = sprinkler.flow * (cmd_time(end) - cmd_time(1));
 disp(['volume_tot ' num2str(volume_tot) '; flow-by-time ' num2str(volume_predicted)]);
 
 volume_field = sum(sum(field.water))

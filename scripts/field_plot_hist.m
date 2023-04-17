@@ -48,14 +48,16 @@ function field_plot_hist(field,xmin,xmax,ymin,ymax,res)
 ##  hist_size = size(field_hist)
   field_hist = interp2(X, Y, field_hist, X2, Y2, 'linear');
   
+  set(gca,'YDir','normal');
   %y2 = flip(y2)
-  im = imagesc(x2,flipud(y2),field_hist);
-  cb = colorbar("FontSize",8);
+  %im = imagesc(x2,y2,flipud(field_hist));
+  im = pcolor(x2,y2,field_hist);
+  cb = colorbar("FontSize",28);
   ylabel(cb,'water [mm]');
   %c.FontSize = 16;
   xlabel("x [m]");
   ylabel("y [m]");
   axis equal;
-  set(gca, 'FontSize', 8)
-  set(gca, 'YDir','reverse') 
+  set(gca, 'FontSize', 28)
+  %set(gca, 'YDir','reverse') 
 end
